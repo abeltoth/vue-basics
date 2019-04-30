@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>VueJS</title>
+	<link rel="stylesheet" href="">
+	<script src="./../vue.js"></script>
+</head>
+<body>
+	<!-- Lehet több instance is, de csak akko ajánlott ha nincs közük egymáshoz. Pl egyikből a másikba nem érdemes függvényt hívni. -->
+	<div id="app1">
+		<h1 ref="heading">{{ title }}</h1>
+		<button v-on:click="show" ref="myButton">Show Paragraph</button>
+		<p v-if="showParagraph">This is not always visible</p>
+	</div>
+	<div id="app2">
+		<h1 ref="heading">{{ title }}</h1>
+		<button @click="onChange">Change something in Vue 1</button>
+	</div>
+
+	<div id="app3">
+
+	</div>
+	<script>
+		var data = {
+			title: 'The VueJS Instance',
+			showParagraph: false
+		}
+
+		var vm1 = new Vue({
+		data: data,
+		methods: {
+			show: function() {
+				this.showParagraph = true;
+				this.updateTitle('The VueJS Instance (Updated)');
+				/* Így könnyen el lehet érni a html kódot, de ha így módosítunk valamit akkor az nem dinamikus előfordulhat hogy valami más felülírja */
+				this.$refs.myButton.innerText = 'Test';
+				console.log(this.$refs.myButton);
+			},
+			updateTitle: function(title) {
+				this.title = title;
+			}
+		},
+		computed: {
+			lowercaseTitle: function() {
+				return this.title.toLowerCase();
+			}
+		},
+		watch: {
+			title: function(value) {
+				alert('Title changed, new value: ' + value);
+			}
+		}
+	});
+	/* Így is meg lehet mondani hogy melyik részt figyelje a Vue */
+	/* Hasznos ha mondjuk még ne tudom hogy melyik template kell vagy az még nem létezik */
+	vm1.$mount('#app1');
+
+	/* Nem érdemes így hozzáadni új propertyket, mert a Vue nem fogja figyelni. Nem tudom a Vue instanceon belül használni. */
+	vm1.newProp = 'New!';
+	/* $data tárolja a data-t, így is el lehet érni kívűlről. */
+	console.log(vm1.$data === data);
+	vm1.$refs.heading.innerText = 'Something else'
+
+	/* Nem csak egy instanceből lehet egy másikat elérni hanem sima javascript kódból is. */
+	setTimeout(function() {
+		vm1.title = 'Changed by Timer';
+		vm1.show();
+	}, 3000);
+
+	var vm2 = new Vue({
+		el: '#app2',
+		data: {
+			title: 'The second instance'
+		},
+		methods: {
+			onChange: function() {
+				vm1.title = 'Changed!';
+			}
+		}
+	});
+
+	var vm3 = new Vue({
+		template: '<h1>Hello</h1>'
+	});
+
+	/* Lehet így is összekapcsolni a Vue-t a template-el, de azért ennél vannak jobb megoldások is. */
+	/* vm3.$mount('');
+	document.getElementById('app3').appendChild(vm3.$el); */
+	</script>
+</body>
+</html>			
