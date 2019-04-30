@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>VueJS</title>
+	<link rel="stylesheet" href="">
+	<script src="./../vue.js"></script>
+</head>
+<body>
+	<div id ="app">
+		<ul>
+			<!-- Első az elem a második az index -->
+			<!-- Alapból csak az elem helyét tárolja el a háttérben a Vue és változás esetén cseréli ki az értéket. Ha szeretném hogy magát az elemet is eltárolja :key-el hozzá kell adni
+				(Ha valami változik a listában akkor lehet ebből baj, pl újra kell rendezni a listát vagy valami hasonló) -->
+			<li v-for="(ingredient, i) in ingredients" :key="ingredient">{{ ingredient }} ({{ i }})</li>
+		</ul>
+		<button @click="ingredients.push('spices')">Add New</button>
+		<hr>
+		<ul>
+			<li v-for="person in people">
+				<!-- Első az elem a második a kulcs -->
+				<div v-for="(value, key, index) in person">{{ key }}: {{ value }} ({{ index }})</div>
+			</li>
+		</ul>
+		<span v-for="n in 10">{{ n }}</span>
+		<hr>
+		<template v-for="(ingredient, index) in ingredients">
+			<h1>{{ ingredient }}</h1>
+			<p>{{ index }}</p>
+		</template>
+	</div>
+	<script>
+		new Vue({
+			el: '#app',
+			data: {
+				ingredients: ['meat', 'fruit', 'cookies'],
+				people: [
+					{name: 'Max', age: 27, color: 'red'},
+					{name: 'Anna', age: 'unknown', color: 'blue'}
+				]
+			}
+		});
+	</script>
+</body>
+</html>			
