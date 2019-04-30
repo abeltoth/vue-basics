@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>VueJS</title>
+	<link rel="stylesheet" href="">
+	<script src="./../vue.js"></script>
+</head>
+<body>
+	<div id ="app">
+		<h1>{{ title }}</h1>
+		<button @click="title = 'Changed'">Update Title</button>
+		<button @click="destroy">Destroy</button>
+	</div>
+	<script>
+		new Vue({
+			el: '#app',
+			data: {
+				title: 'The VueJs Instance'
+			},
+			beforeCreate: function() {
+				console.log('beforeCreate');
+			},
+			created: function() {
+				console.log('created');
+			},
+			beforeMount: function() {
+				console.log('beforeMount');
+			},
+			mounted: function() {
+				console.log('mounted');
+			},
+			beforeUpdate: function() {
+				console.log('beforeUpdate');
+			},
+			/* Csak akkor fut le az update ha valódi változás történik */
+			updated: function() {
+				console.log('updated');
+			},
+			beforeDestroy: function() {
+				console.log('beforeDestroy');
+			},
+			destroyed: function() {
+				console.log('destroyed');
+			},
+			methods: {
+				/* A template megmarad de többé nem figyeli a Vue */
+				destroy: function() {
+					this.$destroy();
+				}
+			},
+		});
+	</script>
+</body>
+</html>			
