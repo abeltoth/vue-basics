@@ -1,4 +1,4 @@
-# vue-cli
+# components-communication
 
 > A Vue.js project
 
